@@ -39,13 +39,24 @@ app.post('/todos', function (req, res) {
   }
 
   body.description = body.description.trim();
-  
+
   //add id
   body.id = todoNextId++;
   //push body into array
   todos.push(body);
   res.json(body);
 });
+
+// DELETE /todos/:id
+app.delete('/todos/:id', function (req, res) {
+  var matchedTodo = _.findWhere(todos, {id: parseInt(req.params.id, 10)});
+  if (matchedTodo) {
+    todos = _.without(todos, matchedTodo);
+    res.json(matchedTodo);
+  } else {
+    res.status(404).send();
+  }
+})
 
 app.listen(PORT, function () {
   console.log('Express listening on port '+ PORT);

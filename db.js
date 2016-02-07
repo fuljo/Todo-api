@@ -1,5 +1,5 @@
 var Sequelize = require('sequelize');
-var env = proces.env.NODE_ENV || 'developement';
+var env = process.env.NODE_ENV || 'developement';
 
 //Setting connection
 var sequelize;

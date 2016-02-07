@@ -70,13 +70,19 @@ app.post('/todos', function (req, res) {
 
 // DELETE /todos/:id
 app.delete('/todos/:id', function (req, res) {
-  var matchedTodo = _.findWhere(todos, {id: parseInt(req.params.id, 10)});
-  if (matchedTodo) {
-    todos = _.without(todos, matchedTodo);
-    res.json(matchedTodo);
-  } else {
-    res.status(404).send();
-  }
+  db.todo.destroy({
+    where: {
+      id: parseInt(req.params.id, 10)
+    }
+  }).then(function (n) {
+    if (n > 0) {
+      return res.status(204).send();
+    } else {
+      return res.status(404).send();
+    }
+  }, function (e) {
+    return res.status(500).send(e);
+  });
 });
 
 // PUT /todos/:id
